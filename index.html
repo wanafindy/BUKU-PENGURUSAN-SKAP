@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ms" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Pengurusan Digital SK Alor Peroi 2026</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        amber: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' },
+                        slate: { 750: '#293548', 800: '#1e293b', 900: '#0f172a' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
+        
+        .tab-content { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; }
+        .accordion-icon { transition: transform 0.3s ease; }
+        .accordion-btn.active .accordion-icon { transform: rotate(180deg); }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-300 font-sans antialiased selection:bg-amber-500 selection:text-white">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed top-0 inset-x-0 z-40 bg-black border-b border-slate-800 px-4 py-3 flex justify-between items-center shadow-lg">
+        <div class="flex items-center space-x-3">
+            <img src="LOGO SK ALOR PEROI.png" alt="Logo SKAP" class="w-10 h-10 bg-white rounded-full p-0.5 object-contain" onerror="this.src='https://via.placeholder.com/40?text=SKAP'">
+            <div>
+                <h1 class="text-sm font-bold text-white leading-none">SK ALOR PEROI</h1>
+                <p class="text-xs text-amber-500 font-semibold">2026</p>
+            </div>
+        </div>
+        <button id="mobile-menu-btn" class="text-slate-300 hover:text-amber-500 p-2 min-h-[44px] min-w-[44px] focus:outline-none transition-colors">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-black border-r border-slate-800 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col shadow-2xl">
+        <div class="p-6 flex flex-col items-center border-b border-slate-800 relative">
+            <button id="close-sidebar-btn" class="lg:hidden absolute top-4 right-4 text-slate-400 hover:text-white min-h-[44px] min-w-[44px]">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <img src="LOGO SK ALOR PEROI.png" alt="Logo SK Alor Peroi" class="w-24 h-24 object-contain mb-4 bg-white rounded-full p-1 shadow-[0_0_15px_rgba(245,158,11,0.3)]" onerror="this.src='https://via.placeholder.com/100?text=SKAP'">
+            <h1 class="text-lg font-bold text-white text-center leading-tight">SK ALOR PEROI</h1>
+            <p class="text-amber-500 font-bold mt-1 text-lg">2026</p>
+            <p class="text-xs text-slate-400 mt-2 italic font-medium">"Berilmu Beramal"</p>
+            <p class="text-[10px] text-amber-400 mt-1 text-center">#SederapMenujuKecemerlangan</p>
+        </div>
+
+        <div class="flex-1 overflow-y-auto py-4 space-y-2 px-4">
+            <button onclick="switchTab('utama')" class="tab-btn active w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 bg-amber-500 text-black shadow-[0_0_10px_rgba(245,158,11,0.2)]" data-target="utama"><i class="fas fa-chart-pie w-5 text-center"></i><span>Utama</span></button>
+            <button onclick="switchTab('pentadbiran')" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-all duration-200" data-target="pentadbiran"><i class="fas fa-building w-5 text-center"></i><span>Pentadbiran</span></button>
+            <button onclick="switchTab('kurikulum')" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-all duration-200" data-target="kurikulum"><i class="fas fa-book-open w-5 text-center"></i><span>Kurikulum</span></button>
+            <button onclick="switchTab('hem')" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-all duration-200" data-target="hem"><i class="fas fa-users w-5 text-center"></i><span>Hal Ehwal Murid</span></button>
+            <button onclick="switchTab('kokurikulum')" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-all duration-200" data-target="kokurikulum"><i class="fas fa-running w-5 text-center"></i><span>Kokurikulum</span></button>
+            <button onclick="switchTab('ppki')" class="tab-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-all duration-200" data-target="ppki"><i class="fas fa-hands-helping w-5 text-center"></i><span>PPKI</span></button>
+            
+            <!-- Download Button -->
+            <div class="pt-4 mt-4 border-t border-slate-800">
+                <a href="https://drive.google.com/file/d/1og548LSKHxLI7bScywLrMEyOXUE_BA8K/view?usp=sharing" target="_blank" class="w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 transition-all shadow-[0_0_15px_rgba(220,38,38,0.3)]">
+                    <i class="fas fa-file-pdf text-lg"></i><span>Muat Turun PDF</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden lg:hidden backdrop-blur-sm transition-opacity"></div>
+
+    <!-- Main Content -->
+    <main class="lg:ml-64 pt-20 lg:pt-0 min-h-screen p-4 lg:p-8">
+        
+        <!-- TAB 1: UTAMA -->
+        <section id="utama" class="tab-content active max-w-6xl mx-auto">
+            <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-2">Dashboard <span class="text-amber-500">Utama</span></h2>
+                    <p class="text-slate-400">Buku Pengurusan Digital SK Alor Peroi 2026</p>
+                </div>
+                <!-- Mobile Download Button -->
+                <a href="https://drive.google.com/file/d/1og548LSKHxLI7bScywLrMEyOXUE_BA8K/view?usp=sharing" target="_blank" class="lg:hidden inline-flex items-center justify-center space-x-2 px-4 py-2 rounded-lg text-sm font-bold text-white bg-red-600 hover:bg-red-500 transition-colors">
+                    <i class="fas fa-download"></i><span>Muat Turun Buku</span>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+                    <div class="flex items-start space-x-4">
+                        <div class="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center text-amber-500 text-2xl flex-shrink-0 border-2 border-amber-500/30"><i class="fas fa-user-tie"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Mohd Aliziyad bin Abas</h3>
+                            <p class="text-sm text-amber-500 mb-3">Pegawai Pendidikan Daerah Besut</p>
+                            <p class="text-sm text-slate-300 italic leading-relaxed">"PPD Terbilang, Sekolah Cemerlang, dan Murid Gemilang. Masa depan negara tidak dibina di parlimen atau di kilang, tetapi ia dipupuk di dalam bilik-bilik darjah kita, bermula dari sekarang."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+                    <div class="flex items-start space-x-4">
+                        <div class="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center text-amber-500 text-2xl flex-shrink-0 border-2 border-amber-500/30"><i class="fas fa-user-graduate"></i></div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Raja Azman bin Raja Yusof</h3>
+                            <p class="text-sm text-amber-500 mb-3">Guru Besar SK Alor Peroi</p>
+                            <p class="text-sm text-slate-300 italic leading-relaxed">"Warga pendidik seharusnya bekerja sebagai satu pasukan yang komited untuk melahirkan modal insan yang holistik. #SederapMenujuKecemerlangan"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4 border-l-4 border-amber-500 pl-3">Info Semasa 2026</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 text-center"><i class="fas fa-users text-2xl text-amber-500 mb-2"></i><p class="text-2xl font-bold text-white">731</p><p class="text-xs text-slate-400 uppercase tracking-wider">Murid</p></div>
+                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 text-center"><i class="fas fa-chalkboard-teacher text-2xl text-amber-500 mb-2"></i><p class="text-2xl font-bold text-white">52</p><p class="text-xs text-slate-400 uppercase tracking-wider">Guru</p></div>
+                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 text-center"><i class="fas fa-door-open text-2xl text-amber-500 mb-2"></i><p class="text-2xl font-bold text-white">18</p><p class="text-xs text-slate-400 uppercase tracking-wider">Kelas Perdana</p></div>
+                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 text-center"><i class="fas fa-child text-2xl text-amber-500 mb-2"></i><p class="text-2xl font-bold text-white">3</p><p class="text-xs text-slate-400 uppercase tracking-wider">Prasekolah</p></div>
+                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 text-center"><i class="fas fa-hands-helping text-2xl text-amber-500 mb-2"></i><p class="text-2xl font-bold text-white">4</p><p class="text-xs text-slate-400 uppercase tracking-wider">Kelas PPKI</p></div>
+                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 text-center"><i class="fas fa-user-cog text-2xl text-amber-500 mb-2"></i><p class="text-2xl font-bold text-white">9</p><p class="text-xs text-slate-400 uppercase tracking-wider">Staf AKP</p></div>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4 border-l-4 border-amber-500 pl-3">Profil Sekolah</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Lagu Sekolah -->
+                <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 text-center flex flex-col justify-center">
+                    <h4 class="text-lg font-bold text-amber-500 mb-4"><i class="fas fa-music mr-2"></i>Lagu Sekolah</h4>
+                    <p class="text-sm text-slate-300 leading-relaxed font-medium tracking-wide">
+                        SKAP SINGKATAN NAMA<br>
+                        JINGGA HITAM PUTIH<br>
+                        PILIHAN HATI KAMI<br>
+                        LAMBANG SUCI DAN MURNI<br>
+                        BERILMU DAN BERAMAL<br>
+                        ITULAH COGAN KATA<br>
+                        PADA GURU DAN JUGA RAKAN<br>
+                        SEMOGA SEJAHTERA<br>
+                        WAHAI KAWANKU<br>
+                        MARILAH KITA BERDOA<br>
+                        PADA TUHAN KAMI BERMOHON
+                    </p>
+                </div>
+                <!-- Makna Lencana -->
+                <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700">
+                    <h4 class="text-lg font-bold text-amber-500 mb-4"><i class="fas fa-shield-alt mr-2"></i>Makna Lencana</h4>
+                    <ul class="text-sm text-slate-300 space-y-3">
+                        <li class="flex items-start"><i class="fas fa-book text-amber-500 mt-1 mr-3 w-4"></i><span><strong class="text-white">Buku:</strong> Melambangkan kecemerlangan ilmu.</span></li>
+                        <li class="flex items-start"><i class="fas fa-cog text-amber-500 mt-1 mr-3 w-4"></i><span><strong class="text-white">Roda:</strong> Kejituan semangat, kegigihan usaha dan kecekalan.</span></li>
+                        <li class="flex items-start"><i class="fas fa-water text-amber-500 mt-1 mr-3 w-4"></i><span><strong class="text-white">Laut:</strong> Lambang kesejagatan ilmu.</span></li>
+                        <li class="flex items-start"><i class="fas fa-moon text-amber-500 mt-1 mr-3 w-4"></i><span><strong class="text-white">Bulan:</strong> Ruang lingkup Melayu, Islam dan Malaysia.</span></li>
+                        <li class="flex items-start"><i class="fas fa-link text-amber-500 mt-1 mr-3 w-4"></i><span><strong class="text-white">Rantai:</strong> Kesebatian idea dan kesepakatan tindakan.</span></li>
+                        <li class="flex items-start"><i class="fas fa-palette text-amber-500 mt-1 mr-3 w-4"></i><span><strong class="text-white">Warna Jingga:</strong> Keberanian dan keikhlasan supaya telus.</span></li>
+                        <li class="flex items-start"><i class="fas fa-adjust text-amber-500 mt-1 mr-3 w-4"></i><span><strong class="text-white">Hitam & Putih:</strong> Warna Negeri Terengganu.</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700">
+                    <h3 class="text-lg font-bold text-amber-500 mb-3"><i class="fas fa-book-reader mr-2"></i>Falsafah Pendidikan Kebangsaan</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed text-justify">Pendidikan di Malaysia adalah suatu usaha berterusan ke arah memperkembangkan lagi potensi individu secara menyeluruh dan bersepadu untuk mewujudkan insan yang seimbang dan harmonis dari segi intelek, rohani, emosi dan jasmani berdasarkan kepercayaan dan kepatuhan kepada Tuhan.</p>
+                </div>
+                <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700">
+                    <h3 class="text-lg font-bold text-amber-500 mb-3"><i class="fas fa-handshake mr-2"></i>Piagam Pelanggan</h3>
+                    <ul class="text-sm text-slate-300 space-y-2 list-disc list-inside pl-2">
+                        <li>Memberi khidmat yang terbaik, adil, mesra, saksama, cekap dan cepat.</li>
+                        <li>Mematuhi dan melaksanakan arahan KPM.</li>
+                        <li>Berusaha mempertingkatkan prestasi akademik murid-murid.</li>
+                        <li>Mendidik akhlak murid supaya menjadi insan muslim yang beriman.</li>
+                        <li>Mempertingkatkan murid dalam bidang Kokurikulum (1M1S).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: PENTADBIRAN -->
+        <section id="pentadbiran" class="tab-content max-w-6xl mx-auto">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-white mb-2">Pengurusan <span class="text-amber-500">Pentadbiran</span></h2>
+                <p class="text-slate-400">Direktori Staf, Guru Kelas, Jawatankuasa & Bilik Khas</p>
+            </div>
+
+            <!-- Searchable Table: Senarai Staf -->
+            <div class="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden mb-8 shadow-lg">
+                <div class="p-5 border-b border-slate-700 bg-slate-800/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <h3 class="text-lg font-bold text-white"><i class="fas fa-address-book text-amber-500 mr-2"></i>Direktori Guru & AKP 2026</h3>
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="search-staf" placeholder="Cari nama atau jawatan..." class="w-full sm:w-64 bg-slate-900 border border-slate-700 text-white text-sm rounded-lg focus:ring-amber-500 focus:border-amber-500 block pl-10 p-2.5 transition-colors">
+                    </div>
+                </div>
+                <div class="overflow-x-auto max-h-[400px]">
+                    <table class="w-full text-sm text-left text-slate-300">
+                        <thead class="text-xs text-amber-500 uppercase bg-slate-750 sticky top-0 z-10">
+                            <tr>
+                                <th class="px-6 py-4">Nama</th>
+                                <th class="px-6 py-4">Jawatan / Gred</th>
+                                <th class="px-6 py-4">No. Telefon</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staf-tbody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Senarai Guru Kelas -->
+            <h3 class="text-xl font-bold text-white mb-4 border-l-4 border-amber-500 pl-3">Senarai Guru Kelas 2026</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8" id="guru-kelas-container">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Jawatankuasa Pentadbiran -->
+            <h3 class="text-xl font-bold text-white mb-4 border-l-4 border-amber-500 pl-3">Jawatankuasa Pentadbiran</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" id="jk-pentadbiran-container">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Penyelaras Bilik Khas -->
+            <h3 class="text-xl font-bold text-white mb-4 border-l-4 border-amber-500 pl-3">Penyelaras Bilik-Bilik Khas</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="bilik-khas-container">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- TAB 3: KURIKULUM -->
+        <section id="kurikulum" class="tab-content max-w-6xl mx-auto">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-white mb-2">Pengurusan <span class="text-amber-500">Kurikulum</span></h2>
+                <p class="text-slate-400">Dasar, Panitia, Takwim Mesyuarat & Program Khas</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="lg:col-span-2 bg-slate-800 rounded-2xl p-6 border border-slate-700">
+                    <h3 class="text-lg font-bold text-amber-500 mb-4"><i class="fas fa-gavel mr-2"></i>Dasar Pengurusan Kurikulum</h3>
+                    <ul class="space-y-3 text-sm text-slate-300">
+                        <li class="flex items-start"><i class="fas fa-check-circle text-amber-500 mt-1 mr-3"></i><span><strong>DSKP & RPT:</strong> DSKP terkini wajib disimpan. RPT disiapkan tidak lewat 15 Januari.</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-amber-500 mt-1 mr-3"></i><span><strong>e-RPH:</strong> Dihantar setiap hari Khamis atau hari terakhir persekolahan minggu tersebut.</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-amber-500 mt-1 mr-3"></i><span><strong>PBD:</strong> Dilaksanakan secara holistik berterusan. Tiada peperiksaan berpusat untuk Tahap 1 & 2.</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-amber-500 mt-1 mr-3"></i><span><strong>Pencerapan:</strong> PdPC dicerap 2 kali setahun secara rasmi oleh Pentadbir/Ketua Panitia.</span></li>
+                    </ul>
+                </div>
+                <div class="bg-gradient-to-br from-amber-600 to-amber-500 rounded-2xl p-6 text-black shadow-lg">
+                    <h3 class="text-lg font-bold mb-2"><i class="fas fa-star mr-2"></i>Program Khas</h3>
+                    <div class="space-y-4 mt-4">
+                        <div class="bg-white/20 p-3 rounded-lg backdrop-blur-sm">
+                            <p class="font-bold text-sm">Anak Baik Lagi Cerdik (ABC)</p>
+                            <p class="text-xs mt-1">15 Minit Bersama Murid (7:30 - 7:45 pagi) mengikut jadual panitia.</p>
+                        </div>
+                        <div class="bg-white/20 p-3 rounded-lg backdrop-blur-sm">
+                            <p class="font-bold text-sm">Learning Walk (LW)</p>
+                            <p class="text-xs mt-1">Memperkasakan MLT. Pemantauan suasana dan proses pembelajaran.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Takwim Mesyuarat Panitia -->
+            <h3 class="text-xl font-bold text-white mb-4 border-l-4 border-amber-500 pl-3">Takwim Mesyuarat Panitia 2026</h3>
+            <div class="overflow-x-auto bg-slate-800 rounded-2xl border border-slate-700 mb-8">
+                <table class="w-full text-sm text-left text-slate-300">
+                    <thead class="text-xs text-amber-500 uppercase bg-slate-750">
+                        <tr>
+                            <th class="px-6 py-4">Panitia</th>
+                            <th class="px-6 py-4">Mesyuarat Bil 1</th>
+                            <th class="px-6 py-4">Mesyuarat Bil 2</th>
+                            <th class="px-6 py-4">Mesyuarat Bil 3</th>
+                        </tr>
+                    </thead>
+                    <tbody id="takwim-panitia-tbody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4 border-l-4 border-amber-500 pl-3">Senarai Ketua Panitia</h3>
+            <div class="overflow-x-auto bg-slate-800 rounded-2xl border border-slate-700 mb-8">
+                <table class="w-full text-sm text-left text-slate-300">
+                    <thead class="text-xs text-amber-500 uppercase bg-slate-750">
+                        <tr>
+                            <th class="px-6 py-4">Mata Pelajaran</th>
+                            <th class="px-6 py-4">Ketua Panitia</th>
+                            <th class="px-6 py-4">Setiausaha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="panitia-tbody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3 class="text-xl font-bold text-white mb-4 border-l-4 border-amber-500 pl-3">Jawatankuasa Unit Kurikulum</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" id="jk-kurikulum-container">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- TAB 4: HEM -->
+        <section id="hem" class="tab-content max-w-6xl mx-auto">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-white mb-2">Hal Ehwal <span class="text-amber-500">Murid (HEM)</span></h2>
+                <p class="text-slate-400">Pengurusan Disiplin, Kebajikan, Keselamatan & Kesihatan</p>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4 border-l-4 border-amber-500 pl-3">Unit-Unit HEM</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8" id="hem-units-container">
+                <!-- Populated by JS -->
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4 border-l-4 border-amber-500 pl-3">Jadual Bertugas Guru Penyayang (Kumpulan)</h3>
+            <div class="overflow-x-auto bg-slate-800 rounded-2xl border border-slate-700">
+                <table class="w-full text-sm text-left text-slate-300">
+                    <thead class="text-xs text-amber-500 uppercase bg-slate-750">
+                        <tr>
+                            <th class="px-6 py-4">Kumpulan</th>
+                            <th class="px-6 py-4">Ketua Kumpulan</th>
+                            <th class="px-6 py-4">Ahli Kumpulan (Contoh)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50"><td class="px-6 py-4 font-bold text-white">A</td><td class="px-6 py-4">Tajul Ashikin Bin Jurid</td><td class="px-6 py-4">Nubailah, Noryuslaini, Jamilah, Zalipah, Najmah, Wan Syakimah</td></tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50"><td class="px-6 py-4 font-bold text-white">B</td><td class="px-6 py-4">Norzimi Bin Halias</td><td class="px-6 py-4">Amran, Nurul Fitri, Norhafiza, Sh. Marlina, Nazibah, Rosmawati</td></tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50"><td class="px-6 py-4 font-bold text-white">C</td><td class="px-6 py-4">Lanhawari Bin Sedek</td><td class="px-6 py-4">Tn Azlan, Rosmanita, Azlinda, Tn Nor Asyikin, Wan Azlini, Sayati</td></tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50"><td class="px-6 py-4 font-bold text-white">D</td><td class="px-6 py-4">Mohd Firdaus B Bakar</td><td class="px-6 py-4">Zulhairi, Kamilah, Rosiha, Noraini Omar, Noraini Che'Ali, Silawati</td></tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50"><td class="px-6 py-4 font-bold text-white">E</td><td class="px-6 py-4">Mohd Fariz Bin Zulkifli</td><td class="px-6 py-4">Norjulishahidea, Siti Esah, Zaharah, Siti Ruhani, Rosyatimah, Mariam</td></tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50"><td class="px-6 py-4 font-bold text-white">F</td><td class="px-6 py-4">Hairi Bin Muhammad</td><td class="px-6 py-4">Nur Azlin Fazrin, Norhazila, Rofeah, Mahanum, Noor Azira, Fazliyana</td></tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50"><td class="px-6 py-4 font-bold text-white">G</td><td class="px-6 py-4">Ahmad Shihabuddin</td><td class="px-6 py-4">Suhaila Abu Bakar, Maisarah, Zulina, Suraihan, Nurul 'Izzah</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- TAB 5: KOKURIKULUM -->
+        <section id="kokurikulum" class="tab-content max-w-6xl mx-auto">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-white mb-2">Pengurusan <span class="text-amber-500">Kokurikulum</span></h2>
+                <p class="text-slate-400">Badan Beruniform, Kelab & Persatuan, Sukan & Permainan</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 text-center"><div class="w-12 h-12 mx-auto bg-amber-500/20 text-amber-500 rounded-full flex items-center justify-center mb-3 text-xl"><i class="fas fa-trophy"></i></div><h4 class="text-white font-bold mb-1">Sukan & Permainan</h4><p class="text-2xl font-bold text-amber-500">50%</p><p class="text-xs text-slate-400 mt-1">Pasukan menjuarai daerah</p></div>
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 text-center"><div class="w-12 h-12 mx-auto bg-amber-500/20 text-amber-500 rounded-full flex items-center justify-center mb-3 text-xl"><i class="fas fa-users"></i></div><h4 class="text-white font-bold mb-1">Penyertaan Murid</h4><p class="text-2xl font-bold text-amber-500">95%</p><p class="text-xs text-slate-400 mt-1">Kehadiran pelajar</p></div>
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 text-center"><div class="w-12 h-12 mx-auto bg-amber-500/20 text-amber-500 rounded-full flex items-center justify-center mb-3 text-xl"><i class="fas fa-medal"></i></div><h4 class="text-white font-bold mb-1">Gred A (CGPA)</h4><p class="text-2xl font-bold text-amber-500">25%</p><p class="text-xs text-slate-400 mt-1">Pelajar mendapat Gred A</p></div>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4 border-l-4 border-amber-500 pl-3">Majlis Kokurikulum</h3>
+            <div class="space-y-3 mb-8" id="koko-accordion-container">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- TAB 6: PPKI -->
+        <section id="ppki" class="tab-content max-w-6xl mx-auto">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-white mb-2">Program Pendidikan Khas Integrasi <span class="text-amber-500">(PPKI)</span></h2>
+                <p class="text-slate-400">Falsafah, Visi, Misi & Jawatankuasa</p>
+            </div>
+
+            <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 mb-8 text-center">
+                <i class="fas fa-quote-left text-3xl text-amber-500/50 mb-4"></i>
+                <p class="text-lg text-slate-200 italic max-w-3xl mx-auto leading-relaxed">"Menyediakan pendidikan yang berkualiti kepada murid-murid dengan keperluan khas untuk menjadikan mereka insan yang dapat berdikari, berjaya dalam hidup dan memberikan bakti kepada masyarakat dan Negara."</p>
+                <p class="text-amber-500 font-bold mt-4">- Misi Pendidikan Khas</p>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4 border-l-4 border-amber-500 pl-3">Jawatankuasa Induk PPKI</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700"><h4 class="text-amber-500 font-bold mb-2 border-b border-slate-700 pb-2">Kurikulum</h4><p class="text-white font-medium">Cg. Nor Aini binti Omar</p></div>
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700"><h4 class="text-amber-500 font-bold mb-2 border-b border-slate-700 pb-2">Hal Ehwal Murid</h4><p class="text-white font-medium">Cg. Rosmawati binti Mat Daud</p></div>
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700"><h4 class="text-amber-500 font-bold mb-2 border-b border-slate-700 pb-2">Kokurikulum</h4><p class="text-white font-medium">Cg. Mohd Fariz bin Zulkifli</p></div>
+            </div>
+
+            <h3 class="text-xl font-bold text-white mb-4 border-l-4 border-amber-500 pl-3">Pembantu Pengurusan Murid (PPM)</h3>
+            <div class="overflow-x-auto bg-slate-800 rounded-2xl border border-slate-700">
+                <table class="w-full text-sm text-left text-slate-300">
+                    <thead class="text-xs text-amber-500 uppercase bg-slate-750">
+                        <tr><th class="px-6 py-4">Nama PPM</th><th class="px-6 py-4">Tugas Utama</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50"><td class="px-6 py-4 font-medium text-white">Cik Latifah binti Noh</td><td class="px-6 py-4">Rekod Pendaftaran, Elaun Murid Khas, Sudut Pengurusan Diri</td></tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50"><td class="px-6 py-4 font-medium text-white">Pn. Arfiza binti Alias</td><td class="px-6 py-4">Rekod Kesihatan, Stok Buku Teks, Pengurusan Sumber</td></tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50"><td class="px-6 py-4 font-medium text-white">Cik Murnisyahiratul Akma binti Kamal</td><td class="px-6 py-4">Pengurusan BBM, Nota Minta, Buletin</td></tr>
+                        <tr class="border-b border-slate-700 hover:bg-slate-700/50"><td class="px-6 py-4 font-medium text-white">Pn. Nurul Sarihah binti Mohd Saleh</td><td class="px-6 py-4">Pengurusan Stok & Inventori, Fail, Surat Keluar/Masuk</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Data & Logic -->
+    <script>
+        // --- DATA INJECTION ---
+        const dataGuru = [
+            { nama: "Raja Azman bin Raja Yusof", gred: "Guru Besar (DG10)", tel: "019-9675680" },
+            { nama: "Wan Afindy bin Wan Jusoh", gred: "GPK Pentadbiran (DG10)", tel: "013-2998529" },
+            { nama: "Rosemiza binti Mohamad", gred: "GPK HEM (DG10)", tel: "019-9511707" },
+            { nama: "Suhaila binti Ismail", gred: "GPK Kokurikulum (DG10)", tel: "011-19004281" },
+            { nama: "Che Hasnizayani binti Che Hassan", gred: "GPK PPKI (DG10)", tel: "013-9431771" },
+            { nama: "Nubailah bt Abdul Rahim", gred: "Guru (DG10)", tel: "013-9424114" },
+            { nama: "Ahmad Shihabuddin bin Abu Bakar", gred: "Guru (DG10)", tel: "019-9101729" },
+            { nama: "Amran bin Zakaria", gred: "Guru (DG13)", tel: "017-9333081" },
+            { nama: "Azlinda binti Mad Zahari", gred: "Guru (DG10)", tel: "011-31429965" },
+            { nama: "Fazli Yana binti Ali", gred: "Guru (DG10)", tel: "012-5679167" },
+            { nama: "Hairi bin Muhamad", gred: "Guru (DG10)", tel: "019-9132949" },
+            { nama: "Jamilah binti Sarju", gred: "Guru (DG12)", tel: "010-6514412" },
+            { nama: "Kamilah binti Abdul Wahab", gred: "Guru (DG10)", tel: "018-2938046" },
+            { nama: "Lanhawari bin Sedek", gred: "Guru (DG7)", tel: "018-4614070" },
+            { nama: "Mahanum binti A.Hamid", gred: "Guru (DG10)", tel: "011-10983709" },
+            { nama: "Maisarah bt Zakaria", gred: "Guru (DG10)", tel: "011-55051514" },
+            { nama: "Mohd Fariz bin Zulkifli", gred: "Guru (DG10)", tel: "019-4745677" },
+            { nama: "Mohd Firdaus bin Bakar", gred: "Guru (DG10)", tel: "018-7664929" },
+            { nama: "Mariam binti Ali", gred: "Guru (DG12)", tel: "013-2000043" },
+            { nama: "Najmah binti Ismail", gred: "Guru (DG10)", tel: "019-9821208" },
+            { nama: "Nazibah binti Abdullah", gred: "Guru (DG10)", tel: "013-9148983" },
+            { nama: "Noor Azira binti Ahmad", gred: "Guru (DG10)", tel: "019-6228361" },
+            { nama: "Norhazila binti Muhamad Ramli", gred: "Guru (DG10)", tel: "012-9374463" },
+            { nama: "Nor Aini binti Omar", gred: "Guru (DG10)", tel: "013-9268381" },
+            { nama: "Noraini binti Che' Ali", gred: "Guru (DG10)", tel: "011-63369495" },
+            { nama: "Norhafiza binti Che Hussin", gred: "Guru (DG10)", tel: "019-9350577" },
+            { nama: "Norzimi bin Halias", gred: "Guru (DG12)", tel: "013-9825773" },
+            { nama: "Noryuslaini binti Yusoff", gred: "Guru (DG10)", tel: "012-7749671" },
+            { nama: "Nurulfitri binti Mohamad@Sulong", gred: "Guru (DG10)", tel: "013-9167653" },
+            { nama: "Nurul 'Izzah binti Abdullah", gred: "Guru (DG10)", tel: "014-5108989" },
+            { nama: "Norjulishahidea binti Jusoh", gred: "Guru (DG10)", tel: "012-6712059" },
+            { nama: "Nur Azlin Fazrin binti Md Bahawi", gred: "Guru (DG9)", tel: "017-9301719" },
+            { nama: "Rofeah binti Sulaiman", gred: "Guru (DG12)", tel: "011-19907263" },
+            { nama: "Rosiha binti Abd Manaf", gred: "Guru (DG10)", tel: "014-5472881" },
+            { nama: "Rosmanita binti Ahmad", gred: "Guru (DG12)", tel: "013-9343381" },
+            { nama: "Rosyatimah binti Hussin", gred: "Guru (DG10)", tel: "019-9618352" },
+            { nama: "Rosmawati binti Mat Daud", gred: "Guru (DG12)", tel: "018-7788352" },
+            { nama: "Sharifah Marlina binti Sayed Mansor", gred: "Guru (DG10)", tel: "019-9884217" },
+            { nama: "Siti Esah binti Wahab", gred: "Guru (DG10)", tel: "014-3627829" },
+            { nama: "Siti Ruhani binti Karim", gred: "Guru (DG10)", tel: "010-8075944" },
+            { nama: "Suraihan binti Yaakub", gred: "Guru (DG12)", tel: "013-9270409" },
+            { nama: "Silawati binti Mat Noh", gred: "Guru (DG10)", tel: "019-9682396" },
+            { nama: "Suhaila binti Abu Bakar", gred: "Guru (DG10)", tel: "013-2568737" },
+            { nama: "Tajul Ashikin bin Jurid", gred: "Guru (DG7)", tel: "012-9562201" },
+            { nama: "Tuan Azlan bin Tuan Mahmood", gred: "Guru (DG10)", tel: "017-9249832" },
+            { nama: "Tuan Nor Ashikin binti Tuan Abu Bakar", gred: "Guru (DG12)", tel: "012-9005141" },
+            { nama: "Wan Azlini binti Wan Arifin", gred: "Guru (DG12)", tel: "010-3354041" },
+            { nama: "Wan Syakimah binti Wan Mustaffa", gred: "Guru (DG10)", tel: "011-63397400" },
+            { nama: "Sayati binti Mat Ail", gred: "Guru (DG12)", tel: "013-9296586" },
+            { nama: "Zaharah @ Norlida binti Deraman", gred: "Guru (DG10)", tel: "014-8197500" },
+            { nama: "Zalipah Ani binti Daud", gred: "Guru (DG10)", tel: "013-9841525" },
+            { nama: "Zulina binti Ya", gred: "Guru (DG10)", tel: "012-9730873" },
+            { nama: "Zulhairi bin Md Dawam", gred: "Guru (DG10)", tel: "016-9866501" },
+            // AKP
+            { nama: "Wan Nazri bin Nawan", gred: "Ketua PT (N2)", tel: "019-6673949" },
+            { nama: "Rahimah binti Abdul Rashid", gred: "AKP (N2)", tel: "013-9514292" },
+            { nama: "Nurul Sarihah binti Mohd Saleh", gred: "AKP (N2)", tel: "013-9020009" },
+            { nama: "Latifah binti Noh", gred: "AKP (N2)", tel: "017-9886471" },
+            { nama: "Arfiza binti Alias", gred: "AKP (N2)", tel: "014-6063730" },
+            { nama: "Suzilah binti Isa", gred: "AKP (N1)", tel: "013-4210041" },
+            { nama: "Ruziana binti Ali", gred: "AKP (H1)", tel: "019-6491624" },
+            { nama: "Fatin Nur Najiha binti Abd Wahab", gred: "AKP (N1)", tel: "019-5483387" },
+            { nama: "Murnisyahidatul Akma binti Kamal", gred: "AKP (N1)", tel: "014-5769296" }
+        ];
+
+        const dataGuruKelas = [
+            { kelas: "1 Pintar", guru: "Pn Suraihan binti Yaakub", catatan: "Penyelaras" },
+            { kelas: "1 Bestari", guru: "NurulFitri binti Mohamad", catatan: "" },
+            { kelas: "1 Dedikasi", guru: "Maisarah binti Zakaria", catatan: "" },
+            { kelas: "2 Pintar", guru: "YM Tuan Nor Ashikin binti Tuan Abu Bakar", catatan: "Penyelaras" },
+            { kelas: "2 Bestari", guru: "Rosyatimah binti Hussin", catatan: "" },
+            { kelas: "2 Dedikasi", guru: "Wan Syakimah binti Wan Mustaffa", catatan: "" },
+            { kelas: "3 Pintar", guru: "Sharifah Marlina binti Sayed Mansor", catatan: "Penyelaras" },
+            { kelas: "3 Bestari", guru: "Zalipah Ani binti Daud", catatan: "" },
+            { kelas: "3 Dedikasi", guru: "Nur Azlin Fazrin Binti Md Bahawi", catatan: "" },
+            { kelas: "4 Pintar", guru: "Noryuslaini binti Yusoff", catatan: "Penyelaras" },
+            { kelas: "4 Bestari", guru: "Tajul Ashikin bin Jurid", catatan: "" },
+            { kelas: "4 Dedikasi", guru: "Kamilah binti Abdul Wahab", catatan: "" },
+            { kelas: "5 Pintar", guru: "Sayati binti Mat Ail", catatan: "Penyelaras" },
+            { kelas: "5 Bestari", guru: "Jamilah binti Sarju", catatan: "" },
+            { kelas: "5 Dedikasi", guru: "Rosiha binti Abd Manaf", catatan: "" },
+            { kelas: "6 Pintar", guru: "Noor Azira binti Ahmad", catatan: "Penyelaras" },
+            { kelas: "6 Bestari", guru: "Siti Ruhani binti Karim", catatan: "" },
+            { kelas: "6 Dedikasi", guru: "Zaharah@Norlida binti Deraman", catatan: "" },
+            { kelas: "Pra Ibnu Sina", guru: "Nurul Izzah binti", catatan: "" },
+            { kelas: "Pra Ibnu Khaldun", guru: "Fazli Yana binti Ali", catatan: "" },
+            { kelas: "Pra Ibnu Rushd", guru: "Norhafiza binti Che Hussin", catatan: "Penyelaras" },
+            { kelas: "PPKI 1 Siddiq", guru: "Azlinda binti Mad Zahari", catatan: "" },
+            { kelas: "PPKI 2 Amanah", guru: "Mohd Fariz Bin Zulkifli", catatan: "" },
+            { kelas: "PPKI 3 Tabligh", guru: "Firdaus bin Bakar", catatan: "" },
+            { kelas: "PPKI 4 Fatonah", guru: "Nor Aini binti Omar", catatan: "Penyelaras" }
+        ];
+
+        const dataBilikKhas = [
+            { bilik: "Bilik Guru", guru: "Siti Ruhani Binti Karim", icon: "fa-chalkboard" },
+            { bilik: "Bilik Mesyuarat", guru: "Zaharah @ Norlida Binti Deraman", icon: "fa-users" },
+            { bilik: "Bilik BOSS", guru: "Najmah Binti Ismail", icon: "fa-box" },
+            { bilik: "Bilik Kaunseling", guru: "Nubailah Binti Abdul Rahim", icon: "fa-comments" },
+            { bilik: "Bilik TS 25", guru: "Mahanum Binti A.Hamid", icon: "fa-project-diagram" },
+            { bilik: "Bilik BBM", guru: "Wan Syakimah Binti Wan Mustaffa", icon: "fa-shapes" },
+            { bilik: "Makmal Komputer", guru: "Lanhawari Bin Sedek", icon: "fa-desktop" },
+            { bilik: "Bilik Seni", guru: "Jamilah Binti Sarju", icon: "fa-palette" },
+            { bilik: "Perpustakaan", guru: "Siti Esah Binti Wahab", icon: "fa-book" },
+            { bilik: "Makmal Sains", guru: "Tajul Ashikin Bin Jurid", icon: "fa-flask" },
+            { bilik: "Bilik Akses", guru: "Zulhairi Bin Md Dawam", icon: "fa-wifi" },
+            { bilik: "Bengkel RBT", guru: "Nazibah Binti Abdullah", icon: "fa-tools" },
+            { bilik: "Kafe KASIH SetPRO", guru: "Nor Aini Bt Omar", icon: "fa-coffee" },
+            { bilik: "Stor Sukan", guru: "Norzimi Bin Halias", icon: "fa-volleyball-ball" },
+            { bilik: "Surau Sekolah", guru: "Kamilah Binti Abdul Wahab", icon: "fa-mosque" },
+            { bilik: "Bilik Disiplin", guru: "Norjulishahidae Binti Jusoh", icon: "fa-gavel" },
+            { bilik: "Bilik Doktor Muda", guru: "Fazli Yana Binti Ali", icon: "fa-user-md" },
+            { bilik: "Bilik j-QAF", guru: "Rofeah Binti Sulaiman", icon: "fa-quran" },
+            { bilik: "Bilik Susu", guru: "Noraini Bt Che Ali", icon: "fa-glass-whiskey" },
+            { bilik: "Bilik Pemulihan", guru: "Silawati Bin Mat Noh", icon: "fa-heart" },
+            { bilik: "Kedai Sekolah", guru: "Noraini Bt Che Ali", icon: "fa-store" },
+            { bilik: "Bilik Bank Soalan", guru: "Noryuslaini Bt Yusoff", icon: "fa-file-alt" },
+            { bilik: "Bilik KAFA/Agama", guru: "Zulina Binti Ya", icon: "fa-book-open" },
+            { bilik: "Bilik Siaraya", guru: "Rosmanita Binti Ahmad", icon: "fa-microphone" },
+            { bilik: "Bilik Kesihatan", guru: "Noor Azira Binti Ahmad", icon: "fa-first-aid" }
+        ];
+
+        const dataJKPentadbiran = [
+            { title: "Kewangan & Aset Alih", pengerusi: "Raja Azman bin Raja Yusof", s_u: "Fatin Najiah / Rosyatimah", desc: "Menyelaras belanjawan, pungutan, dan pengurusan aset alih (TPA)." },
+            { title: "Penarafan Sekolah (SK@S)", pengerusi: "Raja Azman bin Raja Yusof", s_u: "Tuan Azlan Bin Tuan Mahmood", desc: "Membuat penilaian SKPMKualiti@Sekolah dan pelaporan KPM." },
+            { title: "Data / E-Operasi", pengerusi: "Raja Azman bin Raja Yusof", s_u: "Wan Nazri / Fatin Najiha", desc: "Mengemaskini data kakitangan dan maklumat operasi sekolah." },
+            { title: "Rancangan Pemajuan Sekolah", pengerusi: "Raja Azman bin Raja Yusof", s_u: "Norjulishahidea Binti Jusoh", desc: "Merangka pelan strategik dan menyiapkannya bersama AJK." },
+            { title: "PBPPP / e-Prestasi", pengerusi: "Raja Azman bin Raja Yusof", s_u: "Wan Nazri Bin Nawan", desc: "Memberi skor markah PYD dan key-in dalam sistem." },
+            { title: "PLC & Perkembangan Staf", pengerusi: "Raja Azman bin Raja Yusof", s_u: "Kamilah binti Abdul Wahab", desc: "Urusetia program perkembangan staf peringkat sekolah." },
+            { title: "Dokumentasi Sekolah", pengerusi: "Raja Azman bin Raja Yusof", s_u: "Nurulfitri Binti Mohamad@Sulong", desc: "Mengurus dan mengumpul semua dokumentasi program." },
+            { title: "PIBG / PIBKS / Sarana", pengerusi: "Raja Azman bin Raja Yusof", s_u: "Maisarah bt Zakaria", desc: "Menyelaras hubungan sekolah dengan komuniti dan ibu bapa." }
+        ];
+
+        const dataPanitia = [
+            { mp: "Bahasa Melayu", kp: "Norjulishahidea binti Jusoh", su: "Zaharah@Norlida binti Deraman" },
+            { mp: "Bahasa Inggeris", kp: "Noor Azira binti Ahmad", su: "Suraihan binti Yaakub" },
+            { mp: "Matematik", kp: "Tn Nor Ashikin binti Tn Abu Bakar", su: "Sharifah Marlina binti Syed Mansor" },
+            { mp: "Sains", kp: "Sayati Binti Mat Ail", su: "Tajul Ashikin bin Jurid" },
+            { mp: "Pendidikan Islam", kp: "Zalipah Ani binti Daud", su: "Noraini binti Che Ali" },
+            { mp: "Sejarah", kp: "Rosiha binti Abd Manaf", su: "Mahanum binti A. Hamid" },
+            { mp: "Reka Bentuk Teknologi", kp: "Nazibah binti Abdullah", su: "Lanhawari bin Sidek" },
+            { mp: "Pendidikan Seni Visual", kp: "Jamilah binti Sarju", su: "Nur Azlin Fazrin binti Md Bahawi" },
+            { mp: "Pendidikan Muzik", kp: "Rosyatimah binti Hussin", su: "Wan Azlini binti Wan Arifin" },
+            { mp: "Bahasa Arab", kp: "Najmah binti Ismail", su: "Maisarah binti Zakaria" },
+            { mp: "PJPK", kp: "Norzimi bin Halias", su: "Tuan Azlan bin Tuan Mahmood" }
+        ];
+
+        const dataMesyuaratPanitia = [
+            { panitia: "Bahasa Melayu", bil1: "25 JAN 2026", bil2: "7 JUN 2026", bil3: "12 NOV 2026" },
+            { panitia: "Bahasa Inggeris", bil1: "25 JAN 2026", bil2: "7 JUN 2026", bil3: "12 NOV 2026" },
+            { panitia: "Matematik", bil1: "27 JAN 2026", bil2: "13 JUN 2026", bil3: "24 NOV 2026" },
+            { panitia: "Sains", bil1: "26 JAN 2026", bil2: "8 JUN 2026", bil3: "4 NOV 2026" },
+            { panitia: "Pend Islam", bil1: "25 JAN 2026", bil2: "7 JUN 2026", bil3: "12 NOV 2026" },
+            { panitia: "Bahasa Arab", bil1: "25 JAN 2026", bil2: "13 JUN 2026", bil3: "24 NOV 2026" },
+            { panitia: "Pend Kesenian", bil1: "28 JAN 2026", bil2: "14 JUN 2026", bil3: "25 NOV 2026" },
+            { panitia: "Pend Muzik", bil1: "26 JAN 2026", bil2: "8 JUN 2026", bil3: "4 NOV 2026" },
+            { panitia: "PJPK", bil1: "28 JAN 2026", bil2: "14 JUN 2026", bil3: "25 NOV 2026" },
+            { panitia: "RBT", bil1: "27 JAN 2026", bil2: "13 JUN 2026", bil3: "24 NOV 2026" },
+            { panitia: "Sejarah", bil1: "26 JAN 2026", bil2: "8 JUN 2026", bil3: "4 NOV 2026" }
+        ];
+
+        const dataJKKurikulum = [
+            { title: "Pusat Sumber Sekolah", su: "Rosyatimah Binti Hussin", desc: "Mengurus pesanan buku, rekod PSS, dan Program Nilam." },
+            { title: "Penilaian & Pentaksiran", su: "Wan Azlini binti Wan Arifin", desc: "Menyelaras PBD, SEGAK, Psikometrik, dan PAJSK." },
+            { title: "Pendidikan Inklusif (PPIM)", su: "Azllinda binti Mad Zahari", desc: "Merancang program murid berkeperluan khas." },
+            { title: "Prasekolah", su: "Fazli Yana binti Ali", desc: "Menyelaras PdPC dan aktiviti murid Prasekolah." },
+            { title: "Transisi Tahun 1", su: "Nurulfitri binti Mohamad", desc: "Merancang aktiviti minggu transisi murid Tahun 1." },
+            { title: "STEM", su: "Jamilah bt Sarju", desc: "Menyelaras program STEM dalam PdPC." },
+            { title: "ICT Sekolah", su: "Norhafiza binti Che Hussin", desc: "Mengurus ID Delima, e-RPH, dan Portal Sekolah." },
+            { title: "Pemulihan", su: "Rosyatimah bt Hussin", desc: "Merancang program pemulihan BM dan Matematik." }
+        ];
+
+        const dataHEM = [
+            { title: "Badan Pengawas & Disiplin", peny: "Norjulishahidea Bt Jusoh", su: "Azlinda Bt Md Zahari" },
+            { title: "APDM & Data Murid", peny: "Rofeah Bt Sulaiman", su: "Wan Azlini Bt Wan Arifin" },
+            { title: "Bantuan (KWAMP/e-Kasih)", peny: "Wan Azlini Bt Wan Arifin", su: "Sharifah Marlina Bt Sayed Mansor" },
+            { title: "Kantin Sekolah", peny: "Siti Ruhani Bt Karim", su: "Rosiha Bt Abd Manaf" },
+            { title: "Kesihatan & Rawatan", peny: "Noor Azira Bt Ahmad", su: "Suraihan Bt Yaakob" },
+            { title: "SPBT", peny: "Najmah Bt Ismail", su: "Nor Aini Bt Omar" },
+            { title: "Bimbingan & Kaunseling", peny: "Nubailah Bt Abdul Rahim", su: "Mahanum Bt A.Hamid" },
+            { title: "Kedai Sekolah", peny: "Noraini Bt Che'Ali", su: "Silawati Bt Mat Noh" },
+            { title: "Keceriaan & Denggi", peny: "Norhazila Bt Muhamad Ramli", su: "Norhafiza Bt Che Hussin" },
+            { title: "Dakwah Islamiah", peny: "Ahmad Shihabuddin", su: "Wan Azlini Bt Wan Arifin" },
+            { title: "RMT", peny: "Zulina Bt Ya", su: "Siti Ruhani Bt Karim" },
+            { title: "IMFree / PPDa", peny: "Zulhairi B. Md Dawam", su: "Rosmanita Bt.Ahmad" },
+            { title: "Pendaftaran & Rekod", peny: "Wan Syakimah Bt Wan Mustaffa", su: "Rofeah Bt Sulaiman" },
+            { title: "Guru Penyayang", peny: "Mariam Bt Ali", su: "Azlinda Bt Zahari" },
+            { title: "Sifar Murid Cicir", peny: "Silawati Bt Mat Noh", su: "Nubailah Bt Abdul Rahim" },
+            { title: "Sekolah Menengah / SBP", peny: "Zahalina Bt Hamzah", su: "Siti Ruhani Bt Karim" },
+            { title: "Kebajikan (Zakat/Derma)", peny: "Suhaila Bt Ab Bakar", su: "Fazli Yana Bt Ali" },
+            { title: "Keselamatan & Tandas", peny: "Fazli Yana Bt Ali", su: "Norhazila Bt Muhamad Ramli" },
+            { title: "PKJR", peny: "Zaharah @ Norlida Bt Deraman", su: "Mohd Firdaus Bin Bakar" },
+            { title: "Susu Sekolah (PSS)", peny: "Mahanum Bt A. Hamid", su: "YM Tn. Nor Ashikin" },
+            { title: "Bencana / PPS", peny: "Nurul Fitri Bt Mohamad", su: "Rosmawati Bt Mat Daud" },
+            { title: "Surau Sekolah", peny: "Kamilah Bt Abdul Wahab", su: "Noraini Bt Che' Ali" }
+        ];
+
+        const dataKoko = [
+            { type: "Badan Beruniform", items: [
+                { name: "Pengakap", ketua: "Silawati bt Mat Noh" },
+                { name: "St. John Ambulans", ketua: "Zulina bt Ya" },
+                { name: "Puteri Islam", ketua: "Mahanum bt A. Hamid" },
+                { name: "Tunas Kadet Remaja Sekolah", ketua: "Siti Ruhani bt Karim" }
+            ]},
+            { type: "Rumah Sukan", items: [
+                { name: "Berani (Biru)", ketua: "Wan Azlini bt Wan Arifin" },
+                { name: "Mara (Merah)", ketua: "Mariam bt Ali" },
+                { name: "Kental (Kuning)", ketua: "Norhafiza bt Che Hussin" },
+                { name: "Handal (Hijau)", ketua: "Jamilah bt Sarju" }
+            ]},
+            { type: "Kelab & Persatuan", items: [
+                { name: "Bahasa Melayu", ketua: "Zaharah@Norlida Binti Deraman" },
+                { name: "Bahasa Inggeris", ketua: "Rosmanita bt Ahmad" },
+                { name: "Sains dan Matematik", ketua: "Rosyatimah bt Hussin" },
+                { name: "Pendidikan Islam & B. Arab", ketua: "Maisarah Binti Zakaria" },
+                { name: "Doktor Muda", ketua: "Fazli Yana bt Ali" },
+                { name: "Pencegahan Jenayah", ketua: "Zulhairi bin Md Dawam" },
+                { name: "Seni dan Kebudayaan", ketua: "Suraihan binti Yaakub" },
+                { name: "Kerjaya", ketua: "Nubailah bt Abdul Rahim" }
+            ]},
+            { type: "Sukan & Permainan (1M1S)", items: [
+                { name: "Bola Sepak", ketua: "Tajul Ashikin bin Jurid" },
+                { name: "Bola Baling", ketua: "Lanhawari bin Sidek" },
+                { name: "Bola Tampar", ketua: "Sharifah Marlina bt Sayed Mansor" },
+                { name: "Sepak Takraw", ketua: "Hairi bin Muhamad" },
+                { name: "Bola Jaring", ketua: "Siti Esah bt Wahab" },
+                { name: "Badminton", ketua: "Pn. Nor Azira bt Ahmad" },
+                { name: "Olahraga", ketua: "Ahmad Shihabuddin bin Abu Bakar" },
+                { name: "Merentas Desa", ketua: "Nurulfitri Bt. Mohamad" }
+            ]}
+        ];
+
+        // --- RENDER FUNCTIONS ---
+        window.onload = () => {
+            // Render Staf
+            const stafTbody = document.getElementById('staf-tbody');
+            dataGuru.forEach(g => {
+                stafTbody.innerHTML += `
+                    <tr class="border-b border-slate-700 hover:bg-slate-700/50 transition-colors">
+                        <td class="px-6 py-3 font-medium text-white">${g.nama}</td>
+                        <td class="px-6 py-3">${g.gred}</td>
+                        <td class="px-6 py-3">${g.tel}</td>
+                    </tr>`;
+            });
+
+            // Render Guru Kelas
+            const guruKelasContainer = document.getElementById('guru-kelas-container');
+            dataGuruKelas.forEach(gk => {
+                let badge = gk.catatan ? `<span class="bg-amber-500 text-black text-[10px] font-bold px-2 py-0.5 rounded ml-2">${gk.catatan}</span>` : '';
+                guruKelasContainer.innerHTML += `
+                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-lg bg-slate-700 flex items-center justify-center text-amber-500 font-bold text-lg">${gk.kelas.charAt(0)}</div>
+                        <div>
+                            <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider">${gk.kelas}</p>
+                            <p class="text-sm font-bold text-white flex items-center">${gk.guru} ${badge}</p>
+                        </div>
+                    </div>`;
+            });
+
+            // Render Bilik Khas
+            const bilikContainer = document.getElementById('bilik-khas-container');
+            dataBilikKhas.forEach(b => {
+                bilikContainer.innerHTML += `
+                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-lg bg-slate-700 flex items-center justify-center text-amber-500"><i class="fas ${b.icon}"></i></div>
+                        <div><p class="text-xs text-slate-400">${b.bilik}</p><p class="text-sm font-bold text-white">${b.guru}</p></div>
+                    </div>`;
+            });
+
+            // Render JK Pentadbiran
+            const jkPentadbiranContainer = document.getElementById('jk-pentadbiran-container');
+            dataJKPentadbiran.forEach(jk => {
+                jkPentadbiranContainer.innerHTML += `
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                        <h4 class="text-amber-500 font-bold mb-2 border-b border-slate-700 pb-2">${jk.title}</h4>
+                        <p class="text-sm text-white mb-1"><span class="text-slate-400">Pengerusi:</span> ${jk.pengerusi}</p>
+                        <p class="text-sm text-white mb-2"><span class="text-slate-400">Setiausaha:</span> ${jk.s_u}</p>
+                        <p class="text-xs text-slate-400">${jk.desc}</p>
+                    </div>`;
+            });
+
+            // Render Panitia
+            const panitiaTbody = document.getElementById('panitia-tbody');
+            dataPanitia.forEach(p => {
+                panitiaTbody.innerHTML += `
+                    <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                        <td class="px-6 py-3 font-medium text-white">${p.mp}</td>
+                        <td class="px-6 py-3">${p.kp}</td>
+                        <td class="px-6 py-3">${p.su}</td>
+                    </tr>`;
+            });
+
+            // Render Takwim Mesyuarat Panitia
+            const takwimPanitiaTbody = document.getElementById('takwim-panitia-tbody');
+            dataMesyuaratPanitia.forEach(t => {
+                takwimPanitiaTbody.innerHTML += `
+                    <tr class="border-b border-slate-700 hover:bg-slate-700/50">
+                        <td class="px-6 py-3 font-bold text-white">${t.panitia}</td>
+                        <td class="px-6 py-3 text-amber-500">${t.bil1}</td>
+                        <td class="px-6 py-3 text-amber-500">${t.bil2}</td>
+                        <td class="px-6 py-3 text-amber-500">${t.bil3}</td>
+                    </tr>`;
+            });
+
+            // Render JK Kurikulum
+            const jkKurikulumContainer = document.getElementById('jk-kurikulum-container');
+            dataJKKurikulum.forEach(jk => {
+                jkKurikulumContainer.innerHTML += `
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                        <h4 class="text-amber-500 font-bold mb-2 border-b border-slate-700 pb-2">${jk.title}</h4>
+                        <p class="text-sm text-white mb-2"><span class="text-slate-400">Setiausaha:</span> ${jk.su}</p>
+                        <p class="text-xs text-slate-400">${jk.desc}</p>
+                    </div>`;
+            });
+
+            // Render HEM Units
+            const hemContainer = document.getElementById('hem-units-container');
+            dataHEM.forEach(h => {
+                hemContainer.innerHTML += `
+                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                        <h4 class="text-amber-500 font-bold mb-2">${h.title}</h4>
+                        <p class="text-xs text-slate-300 mb-1"><span class="text-slate-500">Penyelaras:</span> ${h.peny}</p>
+                        <p class="text-xs text-slate-300"><span class="text-slate-500">Setiausaha:</span> ${h.su}</p>
+                    </div>`;
+            });
+
+            // Render Koko Accordions
+            const kokoContainer = document.getElementById('koko-accordion-container');
+            dataKoko.forEach(k => {
+                let itemsHtml = k.items.map(i => `
+                    <div class="bg-slate-750 p-3 rounded-lg border border-slate-700">
+                        <p class="font-bold text-white text-sm">${i.name}</p>
+                        <p class="text-xs text-amber-500 mt-1">${i.ketua}</p>
+                    </div>
+                `).join('');
+                
+                kokoContainer.innerHTML += `
+                    <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden">
+                        <button class="accordion-btn w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none hover:bg-slate-750 transition-colors min-h-[44px]">
+                            <span class="font-semibold text-white">${k.type}</span>
+                            <i class="fas fa-chevron-down text-amber-500 accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content bg-slate-900/50">
+                            <div class="p-6 border-t border-slate-700 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                                ${itemsHtml}
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            // Re-attach accordion listeners for dynamically added content
+            document.querySelectorAll('.accordion-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const isActive = button.classList.contains('active');
+                    document.querySelectorAll('.accordion-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.nextElementSibling.style.maxHeight = null;
+                    });
+                    if (!isActive) {
+                        button.classList.add('active');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            });
+        };
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-500', 'text-black', 'shadow-[0_0_10px_rgba(245,158,11,0.2)]');
+                btn.classList.add('text-slate-400');
+            });
+            document.getElementById(tabId).classList.add('active');
+            document.querySelectorAll(`.tab-btn[data-target="${tabId}"]`).forEach(btn => {
+                btn.classList.remove('text-slate-400');
+                btn.classList.add('bg-amber-500', 'text-black', 'shadow-[0_0_10px_rgba(245,158,11,0.2)]');
+            });
+            if(window.innerWidth < 1024) toggleMobileMenu(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mobile Menu Logic
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        function toggleMobileMenu(show) {
+            if (show) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => toggleMobileMenu(true));
+        document.getElementById('close-sidebar-btn').addEventListener('click', () => toggleMobileMenu(false));
+        overlay.addEventListener('click', () => toggleMobileMenu(false));
+
+        // Table Search Logic
+        const searchInput = document.getElementById('search-staf');
+        if(searchInput) {
+            searchInput.addEventListener('keyup', function() {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#staf-tbody tr');
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(filter) ? '' : 'none';
+                });
+            });
+        }
+    </script>
+</body>
+</html>
